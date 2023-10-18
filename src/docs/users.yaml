@@ -1,0 +1,47 @@
+paths:
+  /api/users/:
+    get:
+      summary: Obtiene todos los usuarios
+      tags:
+        - Users
+      responses:
+        "200":
+          description: Los usuarios se obtuvierron correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: Primer nombre del usuario
+        last_name:
+          type: string
+          description: Apellido del usuario
+        email:
+          type: string
+          description: Email unico del usuario
+        dni:
+          type: string
+          description: Numero de identificacion
+        birthDate:
+          type: Date
+          description: Fecha de nacimiento
+        courses:
+          type: Array
+          description: cursos asignados al usuario
+      example:
+        id: ObjectId("asdas33123asd3ze31")
+        first_name: Veronica
+        last_name: Vipputo
+        email: correoVero@correo.com
+        dni: "6515135148"
+        bithDate: "30/05/1988"
+        courses: ["Math", "Biología", "Critica de canciones Luis Miguel"]
