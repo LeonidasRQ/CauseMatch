@@ -1,43 +1,43 @@
 paths:
-  /api/users:
+  /api/organizations:
     get:
-      summary: gets all users by filter
+      summary: gets all organizations
       tags:
-        - Users
+        - Organizations
       responses:
         "200":
-          description: users succesfully retrieved
+          description: organizations successfully retrieved
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#components/schemas/User"
+                  $ref: "#components/schemas/Organization"
     post:
-      summary: creates a user
+      summary: creates a organization
       tags:
-        - Users
+        - Organizations
       requestBody:
         required: true
         content:
           multipart/form-data:
             schema:
-              $ref: "#components/requestBodies/createUser"
+              $ref: "#components/requestBodies/createOrganization"
       responses:
         "201":
-          description: user created succesfully
-  /api/users/{uid}:
+          description: organization created succesfully
+  /api/organizations/{oid}:
     parameters:
-      - name: uid
+      - name: oid
         in: path
         required: true
-        description: user id
+        description: organization id
         schema:
           $type: string
     get:
-      summary: finds one user by id
+      summary: finds one organization by id
       tags:
-        - Users
+        - Organizations
       responses:
         "200":
           $ref: "#/components/responses/Success"
@@ -46,15 +46,15 @@ paths:
         "404":
           $ref: "#/components/responses/NotFound"
     put:
-      summary: updates an user by id
+      summary: updates an organization by id
       tags:
-        - Users
+        - Organizations
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#components/requestBodies/createUser"
+              $ref: "#components/requestBodies/createOrganization"
       responses:
         "200":
           $ref: "#/components/responses/Success"
@@ -63,9 +63,9 @@ paths:
         "404":
           $ref: "#/components/responses/NotFound"
     delete:
-      summary: deletes an user by id
+      summary: deletes an organization by id
       tags:
-        - Users
+        - Organizations
       responses:
         "200":
           $ref: "#/components/responses/SuccessNoPayload"
@@ -76,54 +76,41 @@ paths:
 
 components:
   schemas:
-    User:
+    Organization:
       type: object
       properties:
         id:
           type: number
-          description: unique id
-        first_name:
+        name:
           type: string
-          description: first name
-        last_name:
+        description:
           type: string
-          description: last name
         email:
           type: string
-          description: email
         phone:
           type: string
-          description: phone number
-        profile_picture:
+        address:
           type: string
-          description: profile picture
-        skills:
-          type: array
-          description: list of habilities the user posseses for supporting his/her social causes of interest
-        interests:
-          type: array
-          description: list of social causes the user is interested in to contribute
-        biography:
+        website:
           type: string
-          description: description of the users profile
+        logo:
+          type: string
+        categories:
+          type: array
+          description: social causes the organization supports
         location:
           type: string
-          description: city of interest
-        activities:
-          type: array
-          description: activities in which the user has contributed
+          description: city in which the organization is located
       example:
         id: "SDF13VDS1FGB5"
-        first_name: "Veronica"
-        last_name: "Vipputo"
+        name: "Animalia"
+        description: "We defent wildlife conservation"
         email: "testingemail@gmail.com"
         phone: "+131845182165"
-        profile_picture: "https://www.image.com"
-        skills: ["web development", "UI/UX design", "data analysis"]
-        interests: ["no poverty", "zero hunger", "education"]
-        biography: "I like computers and cheese 💻🧀"
+        address: "4606 May Street"
+        logo: "https://www.image.com"
+        categories: ["animal conservation"]
         location: "Mexico City, Mexico"
-        activities: ["childcare volunteer program"]
     Success:
       type: object
       properties:
@@ -132,7 +119,7 @@ components:
         message:
           type: string
         payload:
-          $ref: "#/components/schemas/User"
+          $ref: "#/components/schemas/Organization"
       required:
         - code
         - message
@@ -158,46 +145,38 @@ components:
         - code
         - message
   requestBodies:
-    createUser:
+    createOrganization:
       type: object
       properties:
-        first_name:
+        name:
           type: string
-          description: first name
-        last_name:
+        description:
           type: string
-          description: last name
         email:
           type: string
-          description: email
         phone:
           type: string
-          description: phone number
-        profile_picture:
+        address:
           type: string
-          description: profile picture
+        website:
+          type: string
+        logo:
+          type: string
           format: binary
-        skills:
+        categories:
           type: array
-          description: list of habilities the user posseses for supporting his/her social causes of interest
-        interests:
-          type: array
-          description: list of social causes the user is interested in to contribute
-        biography:
-          type: string
-          description: description of the users profile
+          description: social causes the organization supports
         location:
           type: string
-          description: city of interest
+          description: city in which the organization is located
       example:
-        first_name: "Veronica"
-        last_name: "Vipputo"
+        name: "Animalia"
+        description: "We defent wildlife conservation"
         email: "testingemail@gmail.com"
         phone: "+131845182165"
-        profile_picture: "https://www.image.com"
-        skills: ["web development", "UI/UX design", "data analysis"]
-        interests: ["no poverty", "zero hunger", "education"]
-        biography: "I like computers and cheese 💻🧀"
+        address: "4606 May Street"
+        logo: "https://www.image.com"
+        categories: ["animal conservation"]
         location: "Mexico City, Mexico"
   responses:
     Success:

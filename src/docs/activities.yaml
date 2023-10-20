@@ -1,0 +1,210 @@
+paths:
+  /api/activities:
+    get:
+      summary: gets all activities
+      tags:
+        - Activities
+      responses:
+        "200":
+          description: activities successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Activity"
+    post:
+      summary: creates a activity
+      tags:
+        - Activities
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/createActivity"
+      responses:
+        "201":
+          description: activity created succesfully
+  /api/activities/{aid}:
+    parameters:
+      - name: aid
+        in: path
+        required: true
+        description: activity id
+        schema:
+          $type: string
+    get:
+      summary: finds one activity by id
+      tags:
+        - Activities
+      responses:
+        "200":
+          $ref: "#/components/responses/Success"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    put:
+      summary: updates an activity by id
+      tags:
+        - Activities
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/createActivity"
+      responses:
+        "200":
+          $ref: "#/components/responses/Success"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      summary: deletes an activity by id
+      tags:
+        - Activities
+      responses:
+        "200":
+          $ref: "#/components/responses/SuccessNoPayload"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+components:
+  schemas:
+    Activity:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        start_date:
+          type: date
+        end_date:
+          type: date
+        locationId:
+          type: string
+        spots_available:
+          type: number
+          description: amount of spots available for volunteers
+        skills_required:
+          type: array
+          description: skills needed for getting into the activity
+        categories:
+          type: array
+          description: social causes the activity targerts
+        organization_id:
+          type: string
+          description: organization that hosts the activity
+      example:
+        id: "SDF13VDS1FGB5"
+        title: "Teaching Sessions"
+        description: "Spread STEM for vulnerable communities"
+        start_date: "2024-07-21"
+        end_date: "2024-08-21"
+        locationId: "SDF13VDS1FGB5"
+        spots_available: 30
+        skills_required: ["web development", "UI/UX design", "data analysis"]
+        categories: ["no poverty", "zero hunger", "education"]
+        organization_id: "SDF13VDS1FGB5"
+    Success:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        payload:
+          $ref: "#/components/schemas/Activity"
+      required:
+        - code
+        - message
+        - payload
+    SuccessNoPayload:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+  requestBodies:
+    createActivity:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        start_date:
+          type: string
+        end_date:
+          type: string
+        locationId:
+          type: string
+        spots_available:
+          type: string
+          description: amount of spots available for volunteers
+        skills_required:
+          type: array
+          description: skills needed for getting into the activity
+        categories:
+          type: array
+          description: social causes the activity targerts
+        organization_id:
+          type: string
+          description: organization that hosts the activity
+      example:
+        title: "Teaching Sessions"
+        description: "Spread STEM for vulnerable communities"
+        start_date: "2024-07-21"
+        end_date: "2024-08-21"
+        locationId: "SDF13VDS1FGB5"
+        spots_available: 30
+        skills_required: ["web development", "UI/UX design", "data analysis"]
+        categories: ["no poverty", "zero hunger", "education"]
+        organization_id: "SDF13VDS1FGB5"
+  responses:
+    Success:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Success"
+    SuccessNoPayload:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SuccessNoPayload"
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Unauthorized:
+      description: User has no access to this resource
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
