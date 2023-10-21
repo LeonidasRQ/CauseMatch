@@ -13,19 +13,7 @@ paths:
                 type: array
                 items:
                   $ref: "#components/schemas/Activity"
-    post:
-      summary: creates a activity
-      tags:
-        - Activities
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#components/requestBodies/createActivity"
-      responses:
-        "201":
-          description: activity created succesfully
+
   /api/activities/{aid}:
     parameters:
       - name: aid
@@ -73,7 +61,27 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "404":
           $ref: "#/components/responses/NotFound"
-
+  /api/activities/{oid}:
+    post:
+      summary: creates a activity inside an existing organization
+      tags:
+        - Activities
+      parameters:
+        - name: oid
+          in: path
+          required: true
+          description: organization id
+          schema:
+            $type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/createActivity"
+      responses:
+        "201":
+          description: activity created succesfully
 components:
   schemas:
     Activity:
@@ -208,3 +216,8 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/Error"
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: cookie
+      name: cause-match-jwt
